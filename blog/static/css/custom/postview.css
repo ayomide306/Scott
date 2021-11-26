@@ -1,0 +1,92 @@
+{% empty %}
+<div class="text-center card p-3 mt-3">
+    <div class="d-flex justify-content-center-between align-items-center">
+        <h5 class="text-center text-warning">
+            No Comment Yet?<br>
+            Be the first to comment
+        </h5>
+    </div>
+</div>
+{% endfor %}
+
+.card{
+    border: none;
+    box-shadow: 5px 6px 6px 2px goldenrod;
+    border-radius: 4px;
+}
+.dots{
+    height: 4px;
+    width: 4px;
+    margin-bottom: 2px;
+    background-color: mediumseagreen;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.user-img{
+    margin-top: 4px;
+}
+
+.check-icon{
+    font-size: 17px;
+    color: sienna;
+    top: 1px;
+    position: relative;
+    margin-left: 3px;
+}
+
+.icons i{
+    margin-left: 8px;
+}
+
+.reply{
+    margin-left: 12px;
+}
+
+.reply small{
+    color: firebrick;
+}
+
+.reply small:hover{
+    color: green;
+    cursor: pointer;
+}
+@media only screen and (max-width:600px) {
+    .row{
+        margin-right: 0%;
+        padding: 0%;
+    }
+    .col-sm{
+        margin-right: 0%;
+    }
+
+    .fa-eye{
+        float: right;
+        position: absolute;
+        margin-left: 5em;
+        margin-top: 0.2em;
+        margin-right: 5em;
+        font-size: 2.5em;
+    }
+    div>.col-sm>button{
+        font-size: 2em;
+    }
+    .row{
+        position: -ms-page;
+    }
+}
+/******For syatem*****/
+@media only screen and (min-width:992px) {
+
+    .row>i{
+        font-size: 4em;
+    }
+    div>.col-sm>button>i{
+        font-size: 4em;
+    }
+    .row{
+        margin-left: 3cm;
+        padding: 1cm;
+        margin-right: 2.5cm;
+    }
+}

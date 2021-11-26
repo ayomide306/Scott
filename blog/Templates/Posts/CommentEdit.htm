@@ -1,0 +1,159 @@
+{% extends "Extensions/Base.htm" %}
+{% load static %}
+{% block title %}
+Replying to {{ comment.user }} on {{ comment.post.title }}
+{% endblock %}
+{% block style %}
+<style>
+    
+    
+    #id_said {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  #id_said {
+    transition: none;
+  }
+}
+
+
+    .rows{
+  --bs-gutter-x: 1em;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(var(--bs-gutter-y) * -1);
+  margin-right: calc(var(--bs-gutter-x) / -2);
+  margin-left: calc(var(--bs-gutter-x) / -2);
+}
+    .card{
+    border: none;
+    box-shadow: 5px 6px 6px 2px goldenrod;
+    border-radius: 4px;
+}
+.dots{
+    height: 4px;
+    width: 4px;
+    margin-bottom: 2px;
+    background-color: mediumseagreen;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.user-img{
+    margin-top: 4px;
+}
+
+.check-icon{
+    font-size: 17px;
+    color: sienna;
+    top: 1px;
+    position: relative;
+    margin-left: 3px;
+}
+
+.icons i{
+    margin-left: 8px;
+}
+
+.reply{
+    margin-left: 12px;
+}
+
+.reply small{
+    color: firebrick;
+}
+
+.reply small:hover{
+    color: green;
+    cursor: pointer;
+}
+@media only screen and (max-width:600px) {
+    .saids{
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .rows{
+        margin-right: 0%;
+        padding: 0%;
+    }
+    .col-sm{
+        margin-right: 0%;
+    }
+
+    .fa-eye{
+        float: right;
+        position: absolute;
+        margin-left: 5em;
+        margin-top: 0.2em;
+        margin-right: 5em;
+        font-size: 2.5em;
+    }
+    div>.col-sm>button{
+        font-size: 2em;
+    }
+    .rows{
+        position: -ms-page;
+    }
+}
+/******For syatem*****/
+@media only screen and (min-width:992px) {
+
+    .rows>i{
+        font-size: 4em;
+    }
+    div>.col-sm>button>i{
+        font-size: 4em;
+    }
+    .rows{
+        margin-left: 3cm;
+        padding: 1cm;
+        margin-right: 2.5cm;
+    }
+    
+    
+}
+
+label{
+    display: none;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container  mt-5">
+   
+<div class="container card mt-3 container border border-primary " style="border-color: #66abcd;">
+    {% if request.user.is_authenticated %} 
+        <div class="container ">
+            <div class="card-header">
+                <h5>
+                    Reply Now
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post" class="replybox1">
+                    {% csrf_token %}
+                    {{ commentform }}
+                    <div class="d-grid mt-3">
+                        <button class='btn btn-outline-primary' type="submit">Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

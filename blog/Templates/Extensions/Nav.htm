@@ -1,0 +1,65 @@
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light fixed-top">
+   <div class="container-fluid ">
+       <a class="navbar-brand text-secondary">
+            Scott Wilson
+       </a>
+       <button aria-label="Toggle Navigation" aria-controls="navbarSupportedContent" aria-expanded="false" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" class="navbar-toggler">
+            <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+           <div class="navbar-nav ms-auto">
+               <form action="/Search" class="nav-item mt-2">
+                <div class="input-group">
+                    <input type="search" placeholder="Search by Title, Content and Intro" value="{{ request.GET.query }}" name="query" class="form-control">
+                    <button class="btn btn-outline-secondary">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </form>
+            {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser %}
+            <a href="/Dashboard" class="nav-item nav-link text-warning">
+                Dashboard
+            </a>
+            {% endif %}
+            <a href="/" class="nav-item nav-link">
+                Home
+            </a>
+            <a href="#" class="backbtn nav-item nav-link">
+                Back
+            </a>
+            <script>
+                $(document).on("click", ".backbtn", function(){
+                           history.back(0);
+                        })
+                        </script>
+                   <a href="/InfoUpdate" class="nav-item nav-link">
+                    UpdateInfo
+                </a>
+                    <a href="/PasswordUpdate" class="nav-item nav-link">
+                        ChangePassword
+                    </a>
+                    <a href="/Logout" class="nav-item nav-link text-danger">
+                        Logout
+                    </a>
+                    {% else %}
+                    <a href="/" class="nav-item nav-link">
+                        Home
+                    </a>
+                    <a href="#" class="backbtn nav-item nav-link">
+                        Back
+                    </a>
+                    <script>
+                        $(document).on("click", ".backbtn", function(){
+                                history.back(0);
+                                })
+                    </script>
+                    <a href="/SignUp" class="nav-item nav-link text-success">
+                        Signup & Login
+                    </a>
+                    {% endif %}
+                    
+            </div>
+       </div>
+   </div>
+</nav>

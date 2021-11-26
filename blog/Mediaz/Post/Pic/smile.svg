@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+	<linearGradient id="face" x1="100%" y1="0%" x2="100%" y2="100%">
+	  <stop offset="0%" stop-color="yellow" stop-opacity="1" />
+	  <stop offset="120%" stop-color="#f5a319" stop-opacity="1" />
+	</linearGradient>
+	<circle cx="100" cy="105" r="80" stroke="#ec9000" stroke-width="8" fill="url('#face')"/>
+	<ellipse cx="75" cy="85" rx="13" ry="15" fill="rgba(0, 0, 0, .9)"/>
+	<ellipse cx="130" cy="85" rx="13" ry="15" fill="rgba(0, 0, 0, .9)"/>
+	<path d="M 72 127 S96 158, 132 127.9"  fill="none" stroke="black" stroke-linecap="round" stroke-width="6"/>
+	<path d="M 74 127 S94 144, 130 128"  fill="none" stroke="black" stroke-linecap="round" stroke-width="8"/>
+</svg>

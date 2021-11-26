@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    {% load static %}
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
+        <meta name ="description" content ="Welcome to my Blog, My Name Is Scott Wilson and This Is My Personal Blogging">
+        <meta name ="keywords" content ="Blog, Tech">
+        <meta name ="author" content ="Scott Wilson">
+        <link rel="stylesheet" href="{% static 'css/bootstrap/dist/css/bootstrap.min.css' %}">
+        <link type="text/css" rel="stylesheet" href="{#% static 'css/materialize.min.css' %#}" />
+        <link rel="stylesheet" href="{% static '/css/font-awesome.min.css' %}">
+        <script src="{% static 'js/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'css/bootstrap/dist/js/bootstrap.js' %}"></script>
+        <!-- Custom icon font-->
+        <link rel="stylesheet" href="{% static 'blog/css/fontastic.css' %}" />
+        <!-- Google fonts - Open Sans-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" />
+        <!-- Fancybox-->
+        <link rel="stylesheet" href="{% static 'blog/vendor/@fancyapps/fancybox/jquery.fancybox.min.css' %}" />
+        <!-- theme stylesheet-->
+        <link rel="stylesheet" href="{% static 'blog/css/style.se.css' %}" id="theme-stylesheet" />
+        <!-- Custom stylesheet - for your changes-->
+        <link rel="stylesheet" href="{% static 'blog/css/custom.css' %}" />
+        <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+    </head>
+    {% block style %}
+    {% endblock %}
+    <body>
+        {% include 'Extensions/Nav.htm' %}
+        <br><div class="container mt-2"><br><br>
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+    {% include 'Extensions/Footer.htm' %}
+    {% block script %}
+    {% endblock %}
+</html>

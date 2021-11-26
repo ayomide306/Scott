@@ -1,0 +1,91 @@
+{% extends 'Extensions/Base.htm' %}
+{% block title %}
+    Editing Post
+{% endblock %}
+{% block content %}
+<style>
+    .boxes{
+        overflow-x: scroll;
+        width: 99%;
+    }
+</style>
+<script>
+    $(document).ready(function(){
+        $("#id_image").removeClass("form-control-file");
+        $("#id_image").addClass("images");
+        $("#id_image").attr('onchange','preview(event)');
+        $("#id_image").attr('accept','image/*');
+        $("#id_image").addClass("form-control");
+        $("#id_content").addClass("form-control");
+        $("#id_sub").removeClass("form-control-file");
+        $("#id_sub").addClass("form-control mb-2");
+        $("#id_title").removeClass("form-control-file");
+        $("#id_title").addClass("form-control mb-2");
+        $("#file-upload-button").removeClass("textarea");
+    })
+
+    function preview(event){
+        var reader = new FileReader()
+        reader.onload = function(){
+            var output = document.getElementById("output");
+            output.src = reader.result;
+            output.style.display = 'flex';
+            document.querySelector('.nt').style.display = 'flex';
+            $(".bttnes").removeClass("disabled");
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+<div class="boxes">
+    <div class="container">
+        {% if success %}
+        <div class="form-group alert alert-success form-control">
+            <span>{{success}}</span>
+            <script>alert({{success}})</script>
+        </div>
+        {% endif %}
+        {% if error %}
+              <div class="form-group alert alert-danger form-control" >
+                <span>{{error}}</span>
+              </div>
+        {% endif %}
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" >
+                        <h5 class="modal-title" id="staticBackdropLabel">Image Preview</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="output" class="image-responsive image-thumbnail" width="100%" src="" alt="">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            .nt{
+                display: none;
+            }
+        </style>
+            <div class="nt d-grid mb-2">
+                <button type="button" class="bttnes btn btn-outline-secondary disabled" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Preview Image Before Upload
+                </button>
+            </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.media}}
+            {{form.as_p}}
+            <div class="d-grid">
+                <button type="submit" class="btn btn-outline-success">
+                    Save Post
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,522 @@
+{% extends "Extensions/Base.htm" %}
+{% load static %}
+{% block title %}
+    {{ postviews.title }}
+{% endblock %}
+{% block style %}
+<style>
+    .rows{
+  --bs-gutter-x: 1em;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(var(--bs-gutter-y) * -1);
+  margin-right: calc(var(--bs-gutter-x) / -2);
+  margin-left: calc(var(--bs-gutter-x) / -2);
+}
+
+.cardimgs{
+    border: none;
+    box-shadow: 6px 6px 6px 6px goldenrod;
+    border-radius: 4px;
+}
+img{
+    border-radius: 15px;
+}
+
+    .card{
+    border: none;
+    box-shadow: 5px 6px 6px 2px goldenrod;
+    border-radius: 4px;
+}
+.dots{
+    height: 4px;
+    width: 4px;
+    margin-bottom: 2px;
+    background-color: mediumseagreen;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.user-img{
+    margin-top: 4px;
+}
+
+.check-icon{
+    font-size: 17px;
+    color: sienna;
+    top: 1px;
+    position: relative;
+    margin-left: 3px;
+}
+
+.icons i{
+    margin-left: 8px;
+}
+
+.reply{
+    margin-left: 12px;
+}
+
+.reply small{
+    color: firebrick;
+}
+
+.reply small:hover{
+    color: green;
+    cursor: pointer;
+}
+@media only screen and (max-width:600px) {
+    #imgs{
+        margin-left: 2.5em;
+    }
+
+    .saids{
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .rows{
+        margin-right: 0%;
+        padding: 0%;
+    }
+    .col-sm{
+        margin-right: 0%;
+    }
+
+    .fa-eye{
+        float: right;
+        position: absolute;
+        margin-left: 5em;
+        margin-top: 0.2em;
+        margin-right: 5em;
+        font-size: 2.5em;
+    }
+    div>.col-sm>button{
+        font-size: 2em;
+    }
+    .rows{
+        position: -ms-page;
+    }
+}
+/******For syatem*****/
+@media only screen and (min-width:992px) {
+    #imgs{
+        margin-left: 7.5em;
+    }
+
+    .rows>i{
+        font-size: 4em;
+    }
+    div>.col-sm>button>i{
+        font-size: 4em;
+    }
+    .rows{
+        margin-left: 3cm;
+        padding: 1cm;
+        margin-right: 2.5cm;
+    }
+}
+</style>
+    <link rel="stylesheet" href="{% static '/css/cmustom/postview.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <a  href="{{ postviews.image.url }}">
+            <img src="{{ postviews.image.url }}" alt="" class="card-img-top container img-thumbnail h-50">
+        </a>
+        <div class="card-body">
+            <p class="card-title text-secondary" style="font-size: 15px;font-family: fantasy;">
+                <i class="fa fa-clock-o">
+                    {{ postviews.created|timesince }}
+                </i> 
+                <a href="/MyProfile">
+                    <i class="ml-2 fa fa-user-o">
+                        {{ postviews.author }}
+                    </i>
+                </a>
+                <div class="rows">
+                    <i class="col-sm text-warning fa fa-eye" >
+                        <sub>
+                            {{ postviews.view.count }}
+                        </sub>
+                    </i>
+                    <form class="like col-sm" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" id="postid" value="{{ postviews.pk }}">
+                        {% if liked %}
+                            <button class="float-sm-end" style="float: right; margin-right: 2em; position: absolute; background: transparent;border-color: transparent;" type="submit">
+                                <i class="fa fa-thumbs-up text-info">
+                                    <sub>
+                                        {{ postviews.like.count }}
+                                    </sub>
+                                </i>
+                            </button>
+                        {% else %}
+                        <button class="float-sm-end" style="float: right; margin-right: 2em; position: absolute; background: transparent;border-color: transparent;" type="submit">
+                            <i class="fa fa-thumbs-o-up text-info">
+                                <sub>
+                                    {{ postviews.like.count }}
+                                </sub>
+                            </i>
+                        </button>
+                        {% endif %}
+                    </form>
+                    <form class="hate col-sm" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="postid" value="{{ postviews.pk }}">
+                        {% if hated %}    
+                        <button class="float-sm-end" style="float: right; margin-right: 4em; margin-left: 4em; position: absolute; background: transparent;border-color: transparent;" type="submit">
+                            <i class="fa fa-thumbs-down text-primary">
+                                <sub>
+                                    {{ postviews.hate.count }}
+                                </sub>
+                            </i>
+                        </button>
+                        {% else %}
+                        <button class="float-sm-end" style="float: right; margin-right: 4em; margin-left: 4em; position: absolute; background: transparent;border-color: transparent;" type="submit">
+                            <i class="fa fa-thumbs-o-down text-primary">
+                                <sub>
+                                    {{ postviews.hate.count }}
+                                </sub>
+                            </i>
+                        </button>
+                        {% endif %}
+                    </form>
+                    <form class="love col-sm" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="postid" value="{{ postviews.pk }}">
+                        {% if loved %}    
+                        <button  class="float-sm-end" style="float: right; margin-left: 50px; position: absolute; background: transparent;border-color: transparent;" type="submit">
+                            <i class="fa fa-heart text-danger">
+                                <sub>
+                                    {{ postviews.love.count }}
+                                </sub>
+                            </i>
+                        </button>
+                        {% else %}
+                        <button class="float-sm-end" style="float: right; margin-left: 50px; position: absolute; background: transparent;border-color: transparent;" type="submit">
+                            <i class="fa fa-heart-o text-danger" >
+                                <sub>
+                                    {{ postviews.love.count }}
+                                </sub>
+                            </i>
+                        </button>
+                        {% endif %}
+                    </form> 
+                </div><br><br>
+            </p>
+            <p class="">
+                {{ postviews.content | safe}}
+            </p>
+            <hr class="clear-fix">
+        </div>
+        <div class="container  mt-5">
+            <div class="row d-flex justify-content-center-between">
+                <div class="col-md-8">
+                    <div class="headings d-flex justify-content-center-between align-items-center mb-3">
+                        <h5>Comments</h5>
+                    </div>
+                    <div class="allcomment">
+                        {% for comment in comment %}
+                            <div class="card mt-4"> 
+                                <!----hr class="clearfix"-->
+                                    <div class="d-flex justify-content-center-between align-items-center">
+                                        <div class=" user d-flex flex-row align-items-center">
+                                                <img src="{{ postviews.image.url }}" width="60" class="user-img rounded-circle mr-2">
+                                                <span>
+                                                    <small>
+                                                        <i class="fa fa-clock-o">
+                                                            {{ comment.saon|timesince }}
+                                                        </i>
+                                                    </small>
+                                                    <small class="font-weight-bold text-primary">
+                                                        {{ comment.user }}
+                                                    </small><br>
+                                                    <small class="saids font-weight-bold">
+                                                        {{ comment.said }}
+                                                    </small>
+                                            </div>
+                                            <div class="action d-flex justify-content-center-between mt-2 align-items-center">
+                                                <div class="reply px-4">
+                                                    {% if request.user.is_authenticated %} 
+                                                        {% if request.user.username == comment.user %}
+                                                            <small>
+                                                                <a href="{% url 'post:deletecomment' pk=comment.pk %}" class="text-decoration-none px-4">
+                                                                    <i class="font-weight-bold fa fa-trash-o text-danger"></i>
+                                                                </a>
+                                                            </small>
+                                                            <small>
+                                                                <a href="{% url 'post:editcomment' pk=comment.pk %}" class="text-decoration-none px-4">
+                                                                    <i class="font-weight-bold fa fa-edit text-primary"></i>
+                                                                </a>
+                                                            </small>
+                                                        {% endif %}
+                                                        <small>
+                                                            <a href="{% url 'post:replycomment' pk=comment.pk %}" id="reply" class="text-decoration-none px-4">
+                                                                <i class="font-weight-bold fa fa-reply text-primary">
+                                                                    <sub>
+                                                                        {{ comment.rply.count }} 
+                                                                    </sub>
+                                                                </i> 
+                                                            </a>
+                                                        </small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        {% empty %}
+                            <div class="card-body font-weight-bold text-center text-primary">
+                                No Comment Yet?<br>Be The First To Comment On This Wonderful Post
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+                        <div class="container card mt-3">
+                            {% if request.user.is_authenticated %} 
+                                <div class="">
+                                    <div class="card-header">
+                                        <h5>
+                                            Comment Now
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="post" class="commentbox1" action="{% url 'post:comment' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" id="postid" value="{{ postviews.pk }}" />
+                                            <div class="input-group mt-3">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-comment-o">
+
+                                                    </i>
+                                                </span>
+                                                <textarea id="said" required="required" type="email" class="form-control h-25" cols="15" rows="5" placeholder="Comment Here" ></textarea>
+                                            </div>
+                                            <div class="d-grid mt-3">
+                                                <button class='btn btn-outline-primary' type="submit">Comment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="">
+                                    <div class="card-header">
+                                        <h5>
+                                            Comment Now
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="post" action="{% url 'post:comment' %}" >
+                                            {% csrf_token %}
+                                            <input type="hidden" name="postid" value="{{ postviews.pk }}" />
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-user">
+
+                                                    </i>
+                                                </span>
+                                                <input required="required" type="text" class="form-control" placeholder="Username" name="username"> 
+                                            </div>
+                                            <div class="input-group mt-3">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-google">
+
+                                                    </i>
+                                                </span>
+                                                <input required="required" type="email" class="form-control" name="email" placeholder="Email">
+                                            </div>
+                                            <div class="input-group mt-3">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-comment-o">
+
+                                                    </i>
+                                                </span>
+                                                <textarea required="required" type="email" name="said" class="form-control h-25" cols="15" rows="5" placeholder="Comment Here" ></textarea>
+                                            </div>
+                                            <div class="d-grid">
+                                                <button class='btn btn-outline-primary' type="submit">Comment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-header border border-info bg-dark text-light mt-4 h2 text-left">
+        Latest Posts
+    </div>
+        <div class="container mt-2">
+            {% for post in latestpost %}
+                <div class="card mb-3">
+                    <div class="card-header border border-primary bg-dark text-light h3 mb-2">
+                        {{ post.title }}
+                    </div>
+                    <img src="{{ post.image.url }}" alt="..." class="cardimgs img-thumbnail card w-75" id="imgs" style=" float: left;">
+                    <div class="card-body float-end" style="margin-left: 25px;">
+                        <p class="card-title text-secondary" style="font-size: 15px;font-family: fantasy;">
+                            <i class="fa fa-clock-o">
+                                {{ post.created|timesince }}
+                            </i> 
+                            <i class="ml-2 mr-2 fa fa-user-o">
+                                {{ post.author }}
+                            </i>
+                            <sub>
+                                {{ post.like.count }}
+                            </sub>
+                            <i class="fa fa-thumbs-up">
+                            </i>
+                            <sub>
+                                {{ post.hate.count }}
+                            </sub>
+                            <i class="fa fa-thumbs-down">
+                            </i>
+                            <sub>
+                                {{ post.love.count }}
+                            </sub>
+                            <i class="fa fa-heart">
+                            </i>
+                            <sub>
+                                {{ post.commentss.count }}
+                            </sub>
+                            <i class="fa fa-commenting">
+                            </i>
+                        </z>
+                        <p class="card-text">
+                            {{ post.sub }}
+                        </p>
+                        <form action="{% url 'post:viewpost' pk=post.pk name=post.title %}" method="get">
+                            <button class="btn btn-outline-primary text-info read" style="float: right;" type="submit">Read More</button><br><br>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}
+{% block script %}
+    
+    <script>
+        $(document).ready(function(){
+            setInterval(function(){
+                $.ajax({
+                    type:"GET",
+                    url:"{% url 'post:viewpost' pk=postviews.pk name=postviews.title %}",
+                    success:function(data){
+                        $(".allcomment").html($(data).find(".allcomment").html());
+                    }
+                });
+            }, 3000);
+        })
+        $(document).on('submit','.commentbox1', function(e){
+            e.preventDefault();
+            $.ajax({
+                type:"POST",
+                url:"{% url 'post:comment' %}",
+                data:{
+                    postid:$("#postid").val(),
+                    said:$("#said").val(),
+                    csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+                },
+                success:function(data){
+                //	if document.querySelector(".body").innerHTML == data;
+                    if (data == "saved"){
+                        document.querySelector("#said").value = "";
+                    }
+                    else{
+                    alert("sorry you have to be logged in to like this post");
+                    }
+                    //document.querySelector(".title").value += "Hive";
+                }
+            });
+        }); 
+
+        $(document).on('submit','.like', function(e){
+        e.preventDefault();
+        $.ajax({
+            type:"POST",
+            url:"{% url 'post:likepost' %}",
+            data:{
+                postid:$("#postid").val(),
+                csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+            },
+            success:function(data){
+                if (data == "allowed"){
+                    $(document).ready(function(){
+                        $.ajax({
+                            type:"GET",
+                            url:"{% url 'post:viewpost' pk=postviews.pk name=postviews.title %}",
+                            success:function(data){
+                                $(".rows").html($(data).find(".rows").html());
+                            }
+                        });
+                    })
+                }
+                else if (data == "unallowed"){
+                    alert("sorry you have to be logged in to like this post");
+                }
+            }
+        });
+    });
+    $(document).on('submit','.hate', function(e){
+        e.preventDefault();
+        $.ajax({
+            type:"POST",
+            url:"{% url 'post:hatepost' %}",
+            data:{
+                postid:$("#postid").val(),
+                csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+            },
+            success:function(data){
+                if (data == "allowed"){
+                    $(document).ready(function(){
+                        $.ajax({
+                            type:"GET",
+                            url:"{% url 'post:viewpost' pk=postviews.pk name=postviews.title %}",
+                            success:function(data){
+                                $(".rows").html($(data).find(".rows").html());
+                            }
+                        });
+                    })
+                }
+                else if (data == "unallowed"){
+                alert("sorry you have to be logged in to dislike this post");
+                }
+            }
+        });
+    });
+    $(document).on('submit','.love', function(e){
+        e.preventDefault();
+        $.ajax({
+            type:"POST",
+            url:"{% url 'post:lovepost' %}",
+            data:{
+                postid:$("#postid").val(),
+                csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+            },
+            success:function(data){
+                if (data == "allowed"){
+                    $(document).ready(function(){
+                        $.ajax({
+                            type:"GET",
+                            url:"{% url 'post:viewpost' pk=postviews.pk name=postviews.title %}",
+                            success:function(data){
+                                $(".rows").html($(data).find(".rows").html());
+                            }
+                        });
+                    })
+                }
+                else if (data == "unallowed"){
+                alert("sorry you have to be logged in to heart this post");
+                }
+            }
+        });
+    });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,308 @@
+<footer class="main-footer mt-3">
+    <div class="container">
+        <style>
+            section.form-group {
+  position: relative;
+}
+
+section input {
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  padding: 0 15px;
+  border: 1px solid #111;
+  font-size: 1.1em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+}
+
+section.submit {
+  height: 60px;
+  padding: 0 30px;
+  line-height: 60px;
+  background: #111;
+  border: 1px solid #111;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Newsletter Section Media Query ------------------------------------- */
+@media (max-width: 575px) {
+  section input {
+    font-size: 0.95em;
+    width: 100%;
+  }
+  section.submit {
+    position: static;
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+        </style>
+        <section class="newsletter ">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <h2>Subscribe to Newsletter</h2>
+                  <span class="text-light ">
+                      Subscribing to our Newsletter means you will be getting all new post as its been published out.<br>
+                      So What You Waiting For. Join Newsletter Now.
+                  </span>
+                </div>
+                {% if request.user.is_authenticated %}
+                <script>
+                  $(document).on('submit','.newswork', function(e){
+                e.preventDefault();
+                $.ajax({
+                    type:"POST",
+                    url:"/JoinLetter",
+                    data:{
+                        email:$("#email").val(),
+                        csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+                    },
+                    success:function(data){
+                    //	if document.querySelector(".body").innerHTML == data;
+                    if (data === "You Have Successfully Subcribe To Our Newsletter"){
+                          document.querySelector(".said").innerHTML = data;
+                          document.querySelector(".errores").style.display = "flex";
+                        }else if (data === "Email Field Can't Be Left Null"){
+                          document.querySelector(".said").innerHTML = data;
+                          document.querySelector(".errores").style.display = "flex";
+                        }else if (data === "Email Already Exists In Our Newsletter"){
+                          document.querySelector(".said").innerHTML = data;
+                          document.querySelector(".errores").style.display = "flex";
+                        }
+                        //document.querySelector(".title").value += "Hive";
+                    }
+                });
+            });
+                </script>
+                <div class="col-md-8">
+                  <div class="form-holder">
+                    <form class="newswork" method="POST">
+                      <div class="form-group">
+                        {% csrf_token %}
+                        <style>
+                          #email{
+                            font-size: x-large;
+                          }
+                        </style>
+                        <input type="hidden" class="invisible" id="email" value="{{request.user.email}}" placeholder="Type your email address" minlength="8">
+                        <input type="submit" class="submit btn btn-dark mt-3" value="Subscribe" >
+                      </div>
+                    </form>
+                    {% else %}
+                    <script>
+                      $(document).on('submit','.newswork', function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        type:"POST",
+                        url:"/JoinLetter",
+                        data:{
+                            email:$("#email").val(),
+                            csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+                        },
+                        success:function(data){
+                        //	if document.querySelector(".body").innerHTML == data;
+                        if (data === "You Have Successfully Subcribe To Our Newsletter"){
+                              document.querySelector(".said").innerHTML = data;
+                              document.querySelector(".errores").style.display = "flex";
+                            }else if (data === "Email Field Can't Be Left Null"){
+                              document.querySelector(".said").innerHTML = data;
+                              document.querySelector(".errores").style.display = "flex";
+                            }else if (data === "Email Already Exists In Our Newsletter"){
+                              document.querySelector(".said").innerHTML = data;
+                              document.querySelector(".errores").style.display = "flex";
+                            }
+                            //document.querySelector(".title").value += "Hive";
+                        }
+                    });
+                });
+                    </script>
+                    <form class="newswork" method="POST">
+                      <div class="form-group">
+                        {% csrf_token %}
+                        <style>
+                          #email{
+                            font-size: x-large;
+                          }
+                        </style>
+                        <input type="email" id="email" placeholder="Type your email address" minlength="8">
+                        <input type="submit" class="submit btn btn-dark mt-2" value="Subscribe" >
+                      </div>
+                    </form>
+                    {% endif %}
+                    <style>
+                      .errores{
+                        display: none;
+                      }
+                    </style>
+                    <div class="col-md-8">
+                      <div class="form-holder mt-3 errores text-center">
+                        <div class="form-group alert alert-success fade show form-control" role="alert">
+                          <span class="said"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <style>
+                    footer.main-footer {
+  background: #0e0e0e;
+  padding: 100px 0 0;
+  color: #fff;
+}
+
+footer.main-footer .contact-details p {
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 5px;
+  font-size: 0.95em;
+}
+
+footer.main-footer .contact-details a {
+  text-decoration: underline;
+  margin-bottom: 0;
+}
+
+footer.main-footer a {
+  color: inherit;
+  font-weight: 300;
+  margin-bottom: 7px;
+}
+
+footer.main-footer a:hover, footer.main-footer a:focus {
+  color: #999;
+}
+
+footer.main-footer ul {
+  margin-right: 30px;
+}
+
+footer.main-footer .list-unstyled a {
+  font-size: 0.95em;
+}
+
+footer.main-footer .latest-posts .image {
+  max-width: 50px;
+  padding: 4px;
+  border: 2px solid #333;
+  margin-right: 10px;
+}
+
+footer.main-footer .latest-posts a {
+  font-size: 0.95em;
+  text-decoration: none;
+}
+
+footer.main-footer .latest-posts a:hover {
+  color: #fff;
+}
+
+footer.main-footer .latest-posts strong {
+  display: block;
+}
+
+footer.main-footer .latest-posts .date {
+  font-size: 0.85em;
+  color: #aaa;
+}
+
+footer.main-footer .copyrights {
+  background: #090909;
+  margin-top: 100px;
+  padding: 20px 0;
+  font-size: 0.9em;
+}
+
+footer.main-footer .copyrights * {
+  margin-bottom: 0;
+}
+
+footer.main-footer .social-menu {
+  margin-top: 20px;
+}
+
+footer.main-footer .social-menu li {
+  padding: 0 5px;
+}
+
+footer.main-footer .date::after,
+footer.main-footer .title::after {
+  display: none !important;
+}
+
+/* Footer Media Query ------------------------------------- */
+@media (max-width: 767px) {
+  footer.main-footer div[class*="col-"] {
+    margin-bottom: 40px;
+  }
+  footer.main-footer div[class*="col-"]:last-of-type {
+    margin-bottom: 0;
+  }
+  footer.main-footer .latest-posts > a {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  footer.main-footer .copyrights div[class*="col-"] {
+    margin-bottom: 20px;
+    text-align: center !important;
+  }
+  footer.main-footer .copyrights div[class*="col-"]:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+                </style>
+                <div class="logo">
+                    <h6 class="text-white">Scott Wilson Blog</h6>
+                </div>
+                <div class="contact-details">
+                    <p>53 Broadway, Broklyn, NY 11249</p>
+                    <p>Phone: +1 320-566-0104</p>
+                    <li class="list-inline-item"><a href="https://wa.me/+1320-566-0104" class="text-decoration-none">Message On Whatsapp <i class="fa fa-whatsapp" style="font-size: larger;" ></i></a></li>
+                    <p>Email: <a href="https://scottwilsonblog@gmail.com">scottwilsonblog@gmail.com</a></p>
+                    <ul class="social-menu invisible">
+                        <li class="list-inline-item"><a href="#"><i style="font-size: larger;" class="fa fa-fcebook"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i style="font-size: larger;" class="fa fa-witter"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-instgram" style="font-size: larger;" ></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-lin" style="font-size: larger;" ></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="menus d-flex">
+                    <!----ul class="list-unstyled">
+                        <li> <a href="#">My Account</a></li>
+                        <li> <a href="#">Add Listing</a></li>
+                        <li> <a href="#">Pricing</a></li>
+                        <li> <a href="#">Privacy &amp; Policy</a></li>
+                    </ul>
+                    <ul class="list-unstyled">
+                        <li> <a href="#">Our Partners</a></li>
+                        <li> <a href="#">FAQ</a></li>
+                        <li> <a href="#">How It Works</a></li>
+                        <li> <a href="#">Contact</a></li>
+                    </ul--->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyrights">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; {% now 'Y' %} All rights reserved. Scott Wilson Blog</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

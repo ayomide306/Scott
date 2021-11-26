@@ -1,0 +1,266 @@
+{% extends "Extensions/Base.htm" %}
+{% load static %}
+{% block title %}
+    Replying to {{ comment.user }} on {{ comment.post.title }}
+{% endblock %}
+{% block style %}
+<style>
+    .rows{
+  --bs-gutter-x: 1em;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(var(--bs-gutter-y) * -1);
+  margin-right: calc(var(--bs-gutter-x) / -2);
+  margin-left: calc(var(--bs-gutter-x) / -2);
+}
+    .card{
+    border: none;
+    box-shadow: 5px 6px 6px 2px goldenrod;
+    border-radius: 4px;
+}
+.dots{
+    height: 4px;
+    width: 4px;
+    margin-bottom: 2px;
+    background-color: mediumseagreen;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.user-img{
+    margin-top: 4px;
+}
+
+.check-icon{
+    font-size: 17px;
+    color: sienna;
+    top: 1px;
+    position: relative;
+    margin-left: 3px;
+}
+
+.icons i{
+    margin-left: 8px;
+}
+
+.reply{
+    margin-left: 12px;
+}
+
+.reply small{
+    color: firebrick;
+}
+
+.reply small:hover{
+    color: green;
+    cursor: pointer;
+}
+@media only screen and (max-width:600px) {
+    .saids{
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .rows{
+        margin-right: 0%;
+        padding: 0%;
+    }
+    .col-sm{
+        margin-right: 0%;
+    }
+
+    .fa-eye{
+        float: right;
+        position: absolute;
+        margin-left: 5em;
+        margin-top: 0.2em;
+        margin-right: 5em;
+        font-size: 2.5em;
+    }
+    div>.col-sm>button{
+        font-size: 2em;
+    }
+    .rows{
+        position: -ms-page;
+    }
+}
+/******For syatem*****/
+@media only screen and (min-width:992px) {
+
+    .rows>i{
+        font-size: 4em;
+    }
+    div>.col-sm>button>i{
+        font-size: 4em;
+    }
+    .rows{
+        margin-left: 3cm;
+        padding: 1cm;
+        margin-right: 2.5cm;
+    }
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="container  mt-5">
+    <div class="row d-flex justify-content-center-between">
+        <div class="col-md-8">
+            <div class="headings d-flex justify-content-center-between align-items-center mb-3">
+                <h5>Comment</h5>
+            </div>
+            <div class="allcomment">
+                <div class="card"> 
+                    <div class="d-flex justify-content-center-between align-items-center">
+                        <div class=" user d-flex flex-row align-items-center">
+                                <img src="{{ comment.post.image.url }}" width="60" class="user-img rounded-circle mr-2">
+                                <span>
+                                    <small>
+                                        <i class="fa fa-clock-o">
+                                            {{ comment.saon|timesince }}
+                                        </i>
+                                    </small>
+                                    <small class="font-weight-bold text-primary">
+                                        {{ comment.user }}
+                                    </small><br>
+                                    <small style="word-break: break-all;" class="saids font-weight-bold">
+                                        {{ comment.said }}
+                                    </small>
+                            </div>
+                            <div class="action d-flex justify-content-center-between mt-2 align-items-center">
+                                <div class="reply px-4">
+                                    {% if request.user.is_authenticated %} 
+                                        {% if request.user.username == comment.user %}
+                                            <small>
+                                                <a href="{% url 'post:deletecomment' pk=comment.pk %}" class="text-decoration-none px-4">
+                                                    <i class="font-weight-bold fa fa-trash-o text-danger"></i>
+                                                </a>
+                                            </small>
+                                            <small>
+                                                <a href="{% url 'post:editcomment' pk=comment.pk %}" class="text-decoration-none px-4">
+                                                    <i class="font-weight-bold fa fa-edit text-primary"></i>
+                                                </a>
+                                            </small>
+                                        {% endif %}
+                                        <small>
+                                            <a href="{% url 'post:replycomment' pk=comment.pk %}" id="reply" class="text-decoration-none px-4">
+                                                <i class="font-weight-bold fa fa-reply text-primary">
+                                                    <sub>
+                                                        {{ comment.rply.count }} 
+                                                    </sub>
+                                                </i> 
+                                            </a>
+                                        </small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><br><br>
+
+<div class="float-lg-end container text-left container " style="float: right; margin-bottom: 2.5em;">
+    <div class="row d-flex justify-content-center-between">
+        <div class="col-md-8">
+            <div class="card-header d-flex justify-content-center-between align-items-center mb-3">
+                <h5>Replys</h5>
+            </div>
+            <div class="">
+                {% for replies in replies %}
+                <div class="card w-75 mb-3 border border-info" > 
+                    <div class="d-flex justify-content-center-between align-items-center">
+                        <div class="user d-flex flex-row align-items-center">
+                                <img src="{{ replies.user.profile.profilepic.url }}" width="60" class="user-img rounded-circle mr-2">
+                                <span>
+                                    <small>
+                                        <i class="fa fa-clock-o">
+                                            {{ replies.saon|timesince }}
+                                        </i>
+                                    </small>
+                                    <small class="font-weight-bold text-primary">
+                                        {{ replies.user }}
+                                    </small><br>
+                                    <small style="word-break: break-all;" class="saids font-weight-bold">
+                                        {{ replies.said }}
+                                    </small>
+                            </div>
+                            <div class="action d-flex justify-content-center-between mt-2 align-items-center">
+                                <div class="reply px-4">
+                                    {% if request.user.is_authenticated %} 
+                                        {% if request.user.username == replies.user.username %}
+                                            <small>
+                                                <a href="{% url 'post:deletereply' pk=replies.pk %}" class="text-decoration-none px-4">
+                                                    <i class="font-weight-bold fa fa-trash-o text-danger"></i>
+                                                </a>
+                                            </small>
+                                            <small>
+                                                <a href="{% url 'post:editreply' pk=replies.pk %}" class="text-decoration-none px-4">
+                                                    <i class="font-weight-bold fa fa-edit text-primary"></i>
+                                                </a>
+                                            </small>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container card mt-3 container border border-primary " style="border-color: #66abcd;">
+    {% if request.user.is_authenticated %} 
+        <div class="container ">
+            <div class="card-header">
+                <h5>
+                    Reply Now
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post" class="replybox1">
+                    {% csrf_token %}
+                    <div class="input-group mt-3">
+                        <span class="input-group-text">
+                            <i class="fa fa-comment-o">
+
+                            </i>
+                        </span>
+                        <textarea id="repl" required="required" class="form-control h-25" cols="15" rows="5" placeholder="Reply Here" ></textarea>
+                    </div>
+                    <div class="d-grid mt-3">
+                        <button class='btn btn-outline-primary bg-dark text-info' type="submit">Reply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            $(document).on('submit','.replybox1', function(e){
+                e.preventDefault();
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'post:replycomment' pk=comment.pk %}",
+                    data:{
+                        replies:$("#repl").val(),
+                        csrfmiddlewaretoken:$("input[name=csrfmiddlewaretoken]").val(),
+                    },
+                    success:function(data){
+                    //	if document.querySelector(".body").innerHTML == data;
+                        if (data == "saved"){
+                            document.querySelector("#reply").value = "";
+                            location.reload();
+                            //alert(reply);
+                        }else{
+                            alert("Sorry, An Error Ocurred. Pls try again later");
+                        }
+                        //document.querySelector(".title").value += "Hive";
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}

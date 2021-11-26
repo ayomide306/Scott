@@ -1,0 +1,131 @@
+{% extends "Extensions/Base.htm" %}
+{% load static %}
+{% block title %}
+    Search Result
+{% endblock %}
+{% block style %}
+
+{% endblock %}
+{% block content %}
+{% load static %}
+    <div class="row">
+        <div class="container bg-dark mb-2" style="border-radius: 15px;">
+            <div class="text-center text-light">
+                <h4 class="card-header">
+                    Search Results
+                </h4>
+            </div>
+        </div>
+        {% for post in results %}
+            <div class="card col-md-4 col-xs-10 mb-3">
+                <div class="card-header" style="font-size: large;font-weight: bolder;">
+                    {{post.title}}
+                </div>
+                <a href="{{ post.image.url }}">
+                    <img src="{{ post.image.url }}" alt="" class="card-img-top container d-block">
+                </a>
+                <div class="card-body">
+                    <p class="card-title text-secondary" style="font-size: 15px;font-family: fantasy;">
+                        <i class="fa fa-clock-o">
+                            {{ post.created|timesince }}
+                        </i> 
+                        <i class="ml-2 mr-2 fa fa-user-o">
+                            {{ post.author }}
+                        </i>
+                        <sub>
+                            {{ post.like.count }}
+                        </sub>
+                        <i class="fa fa-thumbs-up">
+                        </i>
+                        <sub>
+                            {{ post.hate.count }}
+                        </sub>
+                        <i class="fa fa-thumbs-down">
+                        </i>
+                        <sub>
+                            {{ post.love.count }}
+                        </sub>
+                        <i class="fa fa-heart">
+                        </i>
+                        <sub>
+                            {{ post.commentss.count }}
+                        </sub>
+                        <i class="fa fa-commenting">
+                        </i>
+                    </p>
+                    <p class="card-text">
+                        {{ post.sub }}
+                    </p>
+                    <form action="{% url 'post:viewpost' pk=post.pk name=post.title %}" method="get">
+                        <button class="btn btn-outline-primary text-info read" style="float: right;" type="submit">Read More</button><br><br>
+                    </form>
+                    <hr class="clear-fix">
+                </div>
+            </div>
+        {% empty %}
+        <div class="card container h-100 col-md-4 col-xs-10 mb-3">
+            <div class="card-header text-center text-danger h4" style="font-weight: bolder;">
+                No Post Match Search Query???
+            </div>
+            <div class="card-body">
+                <p class="card-text text-center h5">
+                    No Post Match Search Query???
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+<!-- Gallery Section-->
+<section class="gallery no-padding">
+    <div class="row">
+      <div class="mix col-lg-3 col-md-3 col-sm-6">
+        <div class="item"><a href="{% static 'blog/img/gallery-1.jpg' %}" data-fancybox="gallery" class="image"><img
+              src="{% static 'blog/img/gallery-1.jpg' %}" alt="..." class="img-fluid">
+            <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
+          </a></div>
+      </div>
+      <div class="mix col-lg-3 col-md-3 col-sm-6">
+          <div class="item"><a href="{% static 'blog/img/gallery-2.jpg' %}" data-fancybox="gallery" class="image"><img
+            src="{% static 'blog/img/gallery-2.jpg' %}" alt="..." class="img-fluid">
+            <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
+          </a></div>
+      </div>
+      <div class="mix col-lg-3 col-md-3 col-sm-6">
+        <div class="item"><a href="{% static 'blog/img/gallery-3.jpg' %}" data-fancybox="gallery" class="image"><img
+              src="{% static 'blog/img/gallery-3.jpg' %}" alt="..." class="img-fluid">
+            <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
+          </a></div>
+      </div>
+      <div class="mix col-lg-3 col-md-3 col-sm-6">
+        <div class="item"><a href="{% static 'blog/img/gallery-4.jpg' %}" data-fancybox="gallery" class="image"><img
+              src="{% static 'blog/img/gallery-4.jpg' %}" alt="..." class="img-fluid">
+            <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
+          </a></div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% if post.images.count > 0 %}
+                    <div id="carouselExampleControls" class="carousel slide container" data-bs-ride="carousel" >
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="" alt="" class="card-img-top">
+                            </div> 
+                            {% for img in post.images.all %}
+                                <div class="carousel-item ">
+                                    <img src="{{img.image.url}}" alt="" class="card-img-top d-block w-100 h-150">
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+              {% endif %}
+              
